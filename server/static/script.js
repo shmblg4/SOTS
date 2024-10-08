@@ -3,42 +3,46 @@ const reg_button = document.querySelector(".reg_button");
 const closereg_button = document.querySelector(".closereg");
 const reg_menu = document.getElementById('reg_menu');
 const confirm_button = document.getElementById("confirm");
+const wrongpw = document.getElementById('wrongPW');
 
 reg_menu.style.display = 'none';
 reg_menu.style.opacity = '0';
 reg_menu.style.transition = 'opacity 0.3s';
 
 login_button.addEventListener('click', async function () {
-    var username = document.querySelector("#login_id").value;
+    const username = document.querySelector("#login_id").value;
+    const password = document.querySelector("#pass_id").value;
     localStorage.setItem('username', username);
-    var password = document.querySelector("#pass_id").value;
-    const wrongpw = document.getElementById('wrongPW');
 
     try {
-        const response = await fetch("/userdata.json");
-        if (!response.ok) {
-            throw new Error('Ошибка сети: ' + response.status);
-        }
+        const response = await fetch("/request", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: "login",
+                user: {
+                    login: username,
+                    password: password
+                }
+            })
+        });
 
-        const data = await response.json();
-        const user = data[username];
-
-        if (user) {
-            if (user.password === password) {
-                history.pushState(null, '', './login.html');
-                window.location.href = './login.html';
-            } else {
-                wrongpw.style.display = 'flex';
-                setTimeout(() => {
-                    wrongpw.style.display = 'none';
-                }, 2000);
-            }
+        if (response.ok) {
+            // Успешный вход
+            history.pushState(null, '', './login.html');
+            window.location.href = './login.html';
         } else {
-            console.log('Пользователь не найден');
+            // Ошибка аутентификации
+            wrongpw.style.display = 'flex';
+            setTimeout(() => {
+                wrongpw.style.display = 'none';
+            }, 2000);
         }
 
     } catch (error) {
-        console.error('Ошибка при загрузке данных', error);
+        console.error('Ошибка при аутентификации', error);
     }
 });
 
@@ -61,24 +65,26 @@ confirm_button.addEventListener('click', async function () {
     var pass1 = document.querySelector("#reg-pass_id").value;
     var pass2 = document.querySelector("#reg-pass2_id").value;
 
-    const new_user = {
-        login: username,
-        password: pass1,
-        signals: []
-    };
-
-    if (username == "")
-        console.log('1');
-    else if (pass1 != pass2)
-        console.log('2');
+    if (username === "")
+        console.log('Введите имя пользователя');
+    else if (pass1 !== pass2)
+        console.log('Пароли не совпадают');
     else {
+        const new_user = {
+            login: username,
+            password: pass1
+        };
+
         try {
-            const response = await fetch("./userdata.json", {
+            const response = await fetch("/request", { // Измените на корректный маршрут
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(new_user)
+                body: JSON.stringify({
+                    action: "register",
+                    user: new_user
+                })
             });
 
             if (response.ok) {

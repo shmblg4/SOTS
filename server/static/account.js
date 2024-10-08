@@ -1,14 +1,15 @@
 const username = localStorage.getItem('username');
 
+
 if (!username) {
     window.location.href = './index.html';
 }
 
 document.getElementById("nickname").innerHTML = username;
-
+const signals = document.getElementById("user-signals");
 async function dataUpdate() {
     try {
-        const response = await fetch("userdata.json", {
+        const response = await fetch(`/loadData?username=${encodeURIComponent(username)}`, {
             method: 'GET',
             cache: "no-store"
         });
@@ -18,15 +19,13 @@ async function dataUpdate() {
         }
 
         const data = await response.json();
-        const user = data[username];
-
-        if (user) {
-            console.log(user);
+        if (data) {
+            signals.innerHTML = JSON.stringify(data[data.length - 1], null, 2);
         } else {
-            console.log('Пользователь не найден');
+            console.log('Данные не найдены');
         }
     } catch (error) {
-        console.error("Ошибка при загрузке данных", error);
+        console.error("Ошибка при загрузке данных, %s", error);
     }
 }
 
