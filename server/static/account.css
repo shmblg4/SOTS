@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+.window {
+    display: flex;
+}
+
+.nick_line {
+    display: block;
+    padding: 1%;
+}
+
+.nick_line h1 {
+    padding-right: 0.2em;
+}
+
+.options {
+    width: 20%;
+    height: 100vh;
+    background: #262626;
+}
+
+.data {
+    font-size: 1.5em;
+}
