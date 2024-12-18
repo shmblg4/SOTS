@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    background-color: #262626;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    /* margin: 5%; */
+    margin-top: 0;
+    /* background-color: #303030; */
+    padding-top: 1em;
+    margin-bottom: 0;
+}
+
+.authorization input {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: large;
+    background-color: #262626;
+    border: 1px solid #6f4872;
+    color: #a784cf;
+}
+
+.login h1 {
+    text-align: center;
+    font: bold;
+    font-family: monospace;
+    font-size: 5em;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+    margin: 1em;
+}
+
+.login h2 {
+    text-align: center;
+    font: bold;
+    font-family: monospace;
+    font-size: 3em;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+}
+
+.authorization {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    align-items: center;
+}
+
+.authorization p {
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 2em;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+}
+
+.button {
+    margin-top: 3%;
+    background-color: #452647;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    padding: 2%;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.button p {
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 2em;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+}
+
+.button:hover {
+    background-color: #563f5e;
+    transform: scale(1.2);
+    transform: scale3d(2);
+}
+
+.button:active {
+    background-color: #3d2a3d;
+    transform: scale(0.95);
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+#anim1 {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.5s;
+}
+
+#anim2 {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.6s;
+}
+
+#anim3 {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.7s;
+}
+
+#anim4 {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.8s;
+}
+
+#anim5 {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.9s;
+}
+
+#anim6 {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideIn 1s forwards;
+    animation-delay: 1s;
+}
+
+.regisr {
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+    text-align: center;
+    font-size: large;
+}
+
+.regisr p {
+    padding: 2%;
+    width: fit-content;
+    display: flex;
+    align-self: center;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.regisr p:hover {
+    color: aqua;
+    font-size: 2.1em;
+    /* text-shadow: 3px 3px 3px rgb(36, 146, 146); */
+}
+
+#wrongPW {
+    position: fixed;
+    width: fit-content;
+    text-align: center;
+    z-index: 1;
+    color: red;
+    /* text-shadow: 3px 3px 3px rgb(94, 15, 15); */
+    top: 100%;
+    display: none;
+    transition: 0.2s ease;
+}
+
+notify {
+    font-family: monospace;
+    font-size: 1.5em;
+}
+
+.registration {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    z-index: 1;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 40%);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+    color: #a784cf;
+    /* text-shadow: 3px 3px 3px #6f4872; */
+    font-size: 1.5em;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+#reg-input {
+    display: flex;
+    /* Добавлено для использования flexbox */
+    flex-direction: column;
+    /* Упорядочить элементы по вертикали */
+    align-items: center;
+    /* Ценровать элементы по горизонтали */
+    background-color: #262626;
+    padding: 2%;
+    border-radius: 50px;
+}
+
+#reg-input p {
+    margin: 0.5em;
+}
+
+#reg-input input {
+    margin: 0.5em;
+    border: 1px, solid, #6f4872;
+    background-color: #262626;
+    color: #a784cf;
+}
+
+.closereg {
+    padding: 10px 20px;
+    /* Уменьшение отступов для нужного размера */
+    cursor: pointer;
+    transition: 0.3s ease;
+    border-radius: 50px;
+    /* Углы могут быть закруглены */
+    color: #a784cf;
+    margin: 10%, 0;
+    /* Цвет текста */
+}
+
+.closereg:hover {
+    color: aqua;
+    /* text-shadow: 3px 3px 3px rgb(36, 146, 146); */
+}
+
+.confirm_button {
+    padding: 5%;
+    background-color: #452647;
+    border-radius: 50px;
+    width: fit-content;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s ease;
+    margin: 0.5em;
+}
+
+.confirm_button:hover {
+    transform: scale(1.1);
+}

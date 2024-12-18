@@ -1,0 +1,35 @@
+services:
+  tcp-service:
+    build:
+      context: ./tcp-server-service
+    container_name: tcp-service
+    ports:
+      - "8000:8000" # Порт для TCP сервера
+    networks:
+      - app-network
+
+  http-service:
+    build:
+      context: ./http-server-service
+    container_name: http-service
+    ports:
+      - "8080:8080" # Порт для HTTP сервера
+    depends_on:
+      - db-service # Зависимость от сервиса базы данных
+    networks:
+      - app-network
+
+  db-service:
+    build:
+      context: ./database-service
+    container_name: db-service
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./database-service/userdata.json:/root/userdata.json # Монтируем файл базы данных
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
