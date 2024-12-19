@@ -1,19 +1,43 @@
+networks:
+  app-network:
+    driver: bridge
+
 services:
-  tcp-service:
+  tcp-service-1:
     build:
       context: ./tcp-server-service
-    container_name: tcp-service
+    container_name: tcp-service-1
     ports:
       - "8000:8000" # Порт для TCP сервера
     networks:
       - app-network
 
-  http-service:
+  tcp-service-2:
+    build:
+      context: ./tcp-server-service
+    container_name: tcp-service-2
+    ports:
+      - "8001:8000" # Порт для TCP сервера
+    networks:
+      - app-network
+
+  http-service-1:
+    container_name: http-service-1
     build:
       context: ./http-server-service
-    container_name: http-service
     ports:
       - "8080:8080" # Порт для HTTP сервера
+    depends_on:
+      - db-service # Зависимость от сервиса базы данных
+    networks:
+      - app-network
+
+  http-service-2:
+    container_name: http-service-2
+    build:
+      context: ./http-server-service
+    ports:
+      - "8081:8080" # Порт для HTTP сервера
     depends_on:
       - db-service # Зависимость от сервиса базы данных
     networks:
@@ -24,12 +48,32 @@ services:
       context: ./database-service
     container_name: db-service
     ports:
-      - "8081:8081"
-    volumes:
-      - ./database-service/userdata.json:/root/userdata.json # Монтируем файл базы данных
+      - "8082:8081"
     networks:
       - app-network
 
-networks:
-  app-network:
-    driver: bridge
+  nginx-web:
+    image: nginx:alpine
+    container_name: nginx-web
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-web.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - http-service-1
+      - http-service-2
+    networks:
+      - app-network
+
+  nginx-tcp:
+    image: nginx:alpine
+    container_name: nginx-tcp
+    ports:
+      - "81:81"
+    volumes:
+      - ./nginx-tcp.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - tcp-service-1
+      - tcp-service-2
+    networks:
+      - app-network
