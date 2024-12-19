@@ -22,7 +22,7 @@ async function dataUpdate() {
 
         const data = await response.json();
         if (data) {
-            signals.innerHTML = JSON.stringify(data[data.length - 1], null, 2);
+            signals.innerHTML = data[data.length - 1];
         } else {
             console.log('Данные не найдены');
         }
