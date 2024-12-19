@@ -9,16 +9,23 @@ import (
 	"net/http"
 )
 
+func logMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Новое подключение: метод=%s, путь=%s, IP-адрес=%s\n", r.Method, r.URL.Path, r.RemoteAddr)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	address := "0.0.0.0:8080"
 
 	// Хостинг статики
 	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fs)
+	http.Handle("/", logMiddleware(fs))
 	log.Println("HTTP-сервер хостит статические файлы из директории './static'")
 
 	// Обработка POST-запроса для регистрации и авторизации
-	http.HandleFunc("/request", func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/request", logMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 			return
@@ -53,10 +60,10 @@ func main() {
 
 		w.WriteHeader(resp.StatusCode)
 		io.Copy(w, resp.Body)
-	})
+	})))
 
 	// Обработка GET-запроса для получения сигналов
-	http.HandleFunc("/loadData", func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/loadData", logMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username := r.URL.Query().Get("username")
 		if username == "" {
 			http.Error(w, "Не указан логин", http.StatusBadRequest)
@@ -73,10 +80,11 @@ func main() {
 
 		w.WriteHeader(resp.StatusCode)
 		io.Copy(w, resp.Body)
-	})
+	})))
 
 	log.Printf("HTTP-сервер запущен на %s\n", address)
-	if err := http.ListenAndServe(address, nil); err != nil {
+	err := http.ListenAndServe(address, nil)
+	if err != nil {
 		log.Fatal("Ошибка запуска HTTP-сервера:", err)
 	}
 }
